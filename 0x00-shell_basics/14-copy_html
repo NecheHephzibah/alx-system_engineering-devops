@@ -1,2 +1,2 @@
 #!/bin/bash
-cp .html .. / pwd
+find . -name "*.html" -type f -exec cp -u {} ../ \

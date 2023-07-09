@@ -1,2 +1,2 @@
 #!/bin/bash
-if hello = "guillaume" chown betty hello
+if hello = "guillaume" chown "betty"

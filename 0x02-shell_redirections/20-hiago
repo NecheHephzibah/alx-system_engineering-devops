@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "The white Cashmire cat jumped over the lazy slug." | tr -d 'Cc'

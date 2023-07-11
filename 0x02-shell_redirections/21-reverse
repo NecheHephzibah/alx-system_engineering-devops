@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "madam's racecar radar stressed live stars" | rev
+rev

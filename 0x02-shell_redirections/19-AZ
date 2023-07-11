@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "Hello, Acorn! How are you today?" | tr 'Ac' 'Ze'
+tr "A" "Z" | tr "c" "e"

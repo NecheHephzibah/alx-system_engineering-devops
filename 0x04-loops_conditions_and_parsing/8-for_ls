@@ -2,6 +2,7 @@
 # Script that displays the content  of the current
 # directory in a list format.
 
-for item in $(ls); do
+lit=$(ls)
+for item in $lit; do
 	echo "$item" | cut -d '-' -f2
 done

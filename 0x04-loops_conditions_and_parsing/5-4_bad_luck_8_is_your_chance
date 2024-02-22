@@ -3,16 +3,17 @@
 # 4th loop iteration and 'good luck' for the 8th loop iteration.
 
 variable_name="Best School"
-counter=0
+counter=1
 
-while [ $counter -lt 10 ]; do
+while [ $counter -le 10 ]; do
 	if [ $counter -eq 4 ]
 	then
 		echo "bad luck"
 	elif [ $counter -eq 8 ]
 	then
 		echo "good luck"
+	else
+		echo "$variable_name"
 	fi
-	echo "$variable_name"
 	((counter++))
 done

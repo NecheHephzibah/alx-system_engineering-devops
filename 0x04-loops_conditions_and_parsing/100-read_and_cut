@@ -4,7 +4,7 @@
 
 input_file="/etc/passwd"
 
-while IFS=":" read -r username password uid gecos homedir shell; do
+while IFS=":" read -r username _  uid _ homedir _; do
 	echo "Username: $username"
 	echo "User ID: $uid"
 	echo "Home directory: $homedir"

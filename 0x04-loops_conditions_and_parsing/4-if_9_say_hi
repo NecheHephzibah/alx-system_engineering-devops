@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# This script particularly displays the string 'Best School' ten times.
+# but for the 9th iteration, displays Best School and then Hi on a new line.
+variable_name="Best School"
+counter=0
+while [ $counter -lt 10 ]; do
+	if [ $counter -eq 9 ]
+	then
+		echo "Hi"
+	fi
+    echo "$variable_name"
+    ((counter++))
+done

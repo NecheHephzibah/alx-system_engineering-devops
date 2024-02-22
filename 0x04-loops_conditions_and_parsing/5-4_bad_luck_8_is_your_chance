@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Script that loops from 1 to 10 and displays the word 'bad luck' for the
+# 4th loop iteration and 'good luck' for the 8th loop iteration.
+
+variable_name="Best School"
+counter=0
+
+while [ $counter -lt 10 ]; do
+	if [ $counter -eq 4 ]
+	then
+		echo "bad luck"
+	elif [ $counter -eq 8 ]
+	then
+		echo "good luck"
+	fi
+	echo "$variable_name"
+	((counter++))
+done

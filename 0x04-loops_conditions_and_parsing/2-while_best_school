@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script particularly displays the string 'Best School' ten times.
+variable_name="Best School"
+counter=0
+while [ $counter -lt 10 ]; do
+    echo "$variable_name"
+	((counter++))
+done

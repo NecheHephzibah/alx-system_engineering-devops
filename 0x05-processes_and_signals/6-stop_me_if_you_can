@@ -2,4 +2,4 @@
 # script that stops 4-to_infinity_and_beyond process.
 # Basically a different way to terminate a process aside from kill and killall.
 
-pkill "$(pgrep -f 4-to_infinity_and_beyond)"
+pkill -f 4-to_infinity_and_beyond

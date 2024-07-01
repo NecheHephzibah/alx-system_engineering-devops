@@ -1,0 +1,5 @@
+# ssh configuration file
+Host 35.174.176.31
+      User ubuntu
+      PasswordAuthentication no
+      IdentifyFile ~/.ssh/school

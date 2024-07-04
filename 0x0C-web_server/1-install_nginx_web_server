@@ -1,37 +1,38 @@
 #!/usr/bin/env bash
-# This script ensures that Nginx is configured to listen on port 80
-# and serves a page that returns "Hello World!" when queried at its root.
+# This script ensures that Nginx is installed, running, and serving a "Hello World!" page.
 
-# Ensure Nginx is installed (if not installed, install it)
+# Update package list and install Nginx if not already installed
 if ! dpkg -l | grep -q nginx; then
     echo "Installing Nginx..."
     sudo apt-get update -y -qq
     sudo apt-get install nginx -y
+else
+    echo "Nginx is already installed."
 fi
 
 # Ensure Nginx is running
-echo "Ensuring Nginx is running..."
+echo "Starting Nginx..."
 sudo service nginx start
 
 # Allow Nginx through the firewall
-echo "Allowing Nginx through the firewall..."
+echo "Configuring firewall to allow Nginx..."
 sudo ufw allow 'Nginx HTTP'
 
-# Ensure the default Nginx configuration is correct
-echo "Configuring Nginx to return 'Hello World!'..."
+# Create the index page with "Hello World!" content
+echo "Creating index page..."
 echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
 
-# Restart Nginx to apply any changes
+# Restart Nginx to apply changes
 echo "Restarting Nginx..."
 sudo service nginx restart
 
-# Check if Nginx is serving the 'Hello World!' page
-echo "Verifying the Nginx response..."
+# Verify the Nginx response
+echo "Verifying Nginx response..."
 response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/)
 content=$(curl -s http://localhost/)
 
-# Ensure the response code is 200 and the content contains "Hello World!"
-if [ "$response" -eq 200 ] && [[ "$content" == *"Hello World!"* ]]; then
+# Check if the response code is 200 and the content contains "Hello World!"
+if [ "$response" -eq 200 ] && [[ "$content" == "Hello World!" ]]; then
     echo "Nginx is installed, running, and serving the correct content."
     echo "200"
 else

@@ -1,7 +1,41 @@
 #!/usr/bin/env bash
-# Bash script that configures a new Ubuntu machine
-apt-get -y update
-apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-echo 'Hello World!' > /var/www/html/index.nginx-debian.html
-service nginx start
+# This script ensures that Nginx is configured to listen on port 80
+# and serves a page that returns "Hello World!" when queried at its root.
+
+# Ensure Nginx is installed (if not installed, install it)
+if ! dpkg -l | grep -q nginx; then
+    echo "Installing Nginx..."
+    sudo apt-get update -y -qq
+    sudo apt-get install nginx -y
+fi
+
+# Ensure Nginx is running
+echo "Ensuring Nginx is running..."
+sudo service nginx start
+
+# Allow Nginx through the firewall
+echo "Allowing Nginx through the firewall..."
+sudo ufw allow 'Nginx HTTP'
+
+# Ensure the default Nginx configuration is correct
+echo "Configuring Nginx to return 'Hello World!'..."
+echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
+
+# Restart Nginx to apply any changes
+echo "Restarting Nginx..."
+sudo service nginx restart
+
+# Check if Nginx is serving the 'Hello World!' page
+echo "Verifying the Nginx response..."
+response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/)
+content=$(curl -s http://localhost/)
+
+# Ensure the response code is 200 and the content contains "Hello World!"
+if [ "$response" -eq 200 ] && [[ "$content" == *"Hello World!"* ]]; then
+    echo "Nginx is installed, running, and serving the correct content."
+    echo "200"
+else
+    echo "There was an issue with the Nginx installation or configuration."
+    echo "Nginx response code: $response"
+    echo "Nginx content: $content"
+fi

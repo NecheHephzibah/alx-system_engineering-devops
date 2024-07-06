@@ -12,31 +12,12 @@ fi
 
 # Ensure Nginx is running
 echo "Starting Nginx..."
-sudo service nginx start
-
-# Allow Nginx through the firewall
-echo "Configuring firewall to allow Nginx..."
-sudo ufw allow 'Nginx HTTP'
+service nginx start
 
 # Create the index page with "Hello World!" content
 echo "Creating index page..."
-echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
+echo "Hello World!" > /var/www/html/index.html
 
 # Restart Nginx to apply changes
 echo "Restarting Nginx..."
-sudo service nginx restart
-
-# Verify the Nginx response
-echo "Verifying Nginx response..."
-response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/)
-content=$(curl -s http://localhost/)
-
-# Check if the response code is 200 and the content contains "Hello World!"
-if [ "$response" -eq 200 ] && [[ "$content" == "Hello World!" ]]; then
-    echo "Nginx is installed, running, and serving the correct content."
-    echo "200"
-else
-    echo "There was an issue with the Nginx installation or configuration."
-    echo "Nginx response code: $response"
-    echo "Nginx content: $content"
-fi
+service nginx restart

@@ -12,5 +12,5 @@ file { '/root/.ssh/config':
   owner   => 'root',
   group   => 'root',
   mode    => '0600',
-  content => template('ssh/config.erb'),
+  content => template('/root/.ssh/templates/config.erb'),
 }

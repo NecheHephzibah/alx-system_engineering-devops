@@ -1,33 +1,35 @@
-# Ensure the Nginx package is installed
+# 7-puppet_install_nginx_web_server.pp
+
+exec { 'update_apt':
+  command => '/usr/bin/apt-get update',
+  path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+}
+
 package { 'nginx':
-  ensure => installed,
+  ensure  => installed,
+  require => Exec['update_apt'],
 }
 
-# Ensure the Nginx service is running and enabled to start at boot
-service { 'nginx':
-  ensure    => running,
-  enable    => true,
-  require   => Package['nginx'],
-}
-
-# Create the index page with "Hello World!" content
 file { '/var/www/html/index.nginx-debian.html':
   ensure  => file,
-  content => "Hello World!\n",
+  content => 'Hello World!',
   require => Package['nginx'],
 }
 
-# Configure the Nginx server block to include the 301 redirect
 file { '/etc/nginx/sites-available/default':
   ensure  => file,
   content => template('/alx-system_engineering-devops/0x0C-web_server/nginx/default.erb'),
   require => Package['nginx'],
-  notify  => Service['nginx'],  # Notify the Nginx service to restart if this file changes
 }
 
-# Verify Nginx configuration and reload the service if necessary
+service { 'nginx':
+  ensure    => running,
+  enable    => true,
+  subscribe => File['/etc/nginx/sites-available/default'],
+}
+
 exec { 'nginx-reload':
-  command     => '/usr/sbin/nginx -s reload',
+  command     => '/usr/sbin/service nginx reload',
   refreshonly => true,
   subscribe   => File['/etc/nginx/sites-available/default'],
 }

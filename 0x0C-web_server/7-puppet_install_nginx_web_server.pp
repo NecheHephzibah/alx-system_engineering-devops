@@ -1,35 +1,22 @@
 # 7-puppet_install_nginx_web_server.pp
 
-exec { 'update_apt':
-  command => '/usr/bin/apt-get update',
-  path    => ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
-}
 
 package { 'nginx':
-  ensure  => installed,
-  require => Exec['update_apt'],
+  ensure => installed,
 }
 
-file { '/var/www/html/index.nginx-debian.html':
-  ensure  => file,
+file_line { 'install':
+  ensure => 'present',
+  path   => '/etc/nginx/sites-available/default',
+  after  => 'listen 80 default_server;',
+  line   => 'rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;',
+}
+
+file { '/var/www/html/index.html':
   content => 'Hello World!',
-  require => Package['nginx'],
-}
-
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => template('/alx-system_engineering-devops/0x0C-web_server/nginx/default.erb'),
-  require => Package['nginx'],
 }
 
 service { 'nginx':
-  ensure    => running,
-  enable    => true,
-  subscribe => File['/etc/nginx/sites-available/default'],
-}
-
-exec { 'nginx-reload':
-  command     => '/usr/sbin/service nginx reload',
-  refreshonly => true,
-  subscribe   => File['/etc/nginx/sites-available/default'],
+  ensure  => running,
+  require => Package['nginx'],
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# for task #0, make your fix short and sweet.
-apt-get -y update
-apt-get install -y nginx
-sudo service nginx start
+# for task #0, make your fix short and sweet
+cat /etc/nginx/sites-available/default > /etc/nginx/sites-enabled/default
+sudo service nginx restart
+rm /run/nginx.pid

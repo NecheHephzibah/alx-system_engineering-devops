@@ -1,26 +1,19 @@
-# Ensure the SSH config directory exists
-file { '/root/.ssh':
-  ensure => directory,
-  mode   => '0700',
+#!/usr/bin/env bash
+# Make changes to config file using Puppet
+file {'/etc/ssh/ssh_config':
+		ensure => 'present',
 }
 
-# Ensure the SSH config file exists with the correct content
-file { '/root/.ssh/config':
-  ensure  => file,
-  mode    => '0600',
-  content => template('/root/.ssh/templates/config.erb'),
+file_line {'Turn off passwd auth':
+		path   => '/etc/ssh/ssh_config',
+		line   => 'PasswordAuthentication no',
+		match  => 'PasswordAuthentication yes',
+		replace => 'true',
 }
 
-# Turn off password authentication
-file_line { 'Turn off passwd auth':
-  path  => '/root/.ssh/config',
-  line  => '    PasswordAuthentication no',
-  match => '^ *PasswordAuthentication',
-}
-
-# Declare the identity file
-file_line { 'Declare identity file':
-  path  => '/root/.ssh/config',
-  line  => '    IdentityFile /root/.ssh/school',
-  match => '^ *IdentityFile',
+file_line {'Use an identity file':
+		path   => '/etc/ssh/ssh_config',
+        line   => 'IdentityFile ~/.ssh/config',
+        match  => '^IdentityFile',
+        ensure => 'present',
 }

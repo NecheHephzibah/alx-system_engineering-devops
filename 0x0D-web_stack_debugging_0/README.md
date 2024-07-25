@@ -1,0 +1,1 @@
+This tasks deals with web stack debugging which involves the use of docker. Docker is a containerized virtual machine that helps in the isolation of certain programming projects so that it doesn't share the space of a computer memory

@@ -14,7 +14,7 @@ if __name__ == "__main__":
     user = requests.get(url + "users/{}".format(user_id)).json()
     username = user.get("username")
 
-    #get the to do list for the employee using employee ID
+    # get the to do list for the employee using employee ID
     params = {"userId": user_id}
     todos = requests.get(url + "todos", params).json()
 
@@ -35,4 +35,3 @@ if __name__ == "__main__":
 
     with open("{}.json".format(user_id), "w") as jsonfile:
         json.dump(data_to_export, jsonfile)
-

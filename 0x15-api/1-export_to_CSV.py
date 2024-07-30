@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ extend your Python script to export data in the CSV format."""
 
-import  csv
+import csv
 import requests
 import sys
 
@@ -23,4 +23,3 @@ if __name__ == "__main__":
         [files.writerow(
             [user_id, username, t.get("completed"), t.get("title")]
             ) for t in todos]
-

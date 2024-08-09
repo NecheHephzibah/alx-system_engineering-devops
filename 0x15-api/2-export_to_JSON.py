@@ -3,35 +3,56 @@
 
 import json
 import requests
-import sys
+from  sys import argv
+
+def get_employee_todo_progress(employee_id):
+    """the employee to do progress function"""
+    try:
+        url = "https://jsonplaceholder.typicode.com/"
+        user_datas = requests.get(url + f"users/{employee_id}")
+        user_data = user_datas.json()
+        employee_name = user_data['username']
+
+        """now lets fetch the todos list for an employee
+        note that we use todos?<dic_key>=value"""
+        todos_list = requests.get(url + f"todos?userId={employee_id}")
+        json_todos_list = todos_list.json()
+
+        """calculate the task done and left todo"""
+        total_task = len(json_todos_list)
+        """check the completed task"""
+        task_done = [task for task in json_todos_list if task['completed']]
+        no_task_done = len(task_done)
+
+        """displaying result"""
+        print(f"Employee {employee_name} is done with tasks("
+              f"{no_task_done}/{total_task}):")
+
+        """printing the title of completed task"""
+        for task in task_done:
+            print(f"\t {task['title']}")
+
+        """prepare data for json export"""
+        tasks = [
+                {"task": task["title"],
+                 "completed": task["completed"],
+                 "username": employee_name
+                 }
+                for task in json_todos_list
+            ]
+        new_json_data = {str(employee_id): tasks}
+
+        """exporting data to a json file"""
+        json_filename = f"{employee_id}.json"
+        with open(json_filename, mode='w') as json_file:
+            json.dump(new_json_data, json_file, indent=4)
+
+    except Exception as e:
+        print(f"an error occured: {e}")
 
 
 if __name__ == "__main__":
-    user_id = sys.argv[1]
-
-    url = "https://jsonplaceholder.typicode.com/"
-
-    user = requests.get(url + "users/{}".format(user_id)).json()
-    username = user.get("username")
-
-    # get the to do list for the employee using employee ID
-    params = {"userId": user_id}
-    todos = requests.get(url + "todos", params).json()
-
-    # dictionary containing the user and todo list info
-    data_to_export = {
-        user_id: [
-            {
-                "task": t.get("title"),
-                "completed": t.get("completed"),
-                "username": username
-            }
-            for t in todos
-        ]
-    }
-
-
-    # convert the data to json file
-
-    with open("{}.json".format(user_id), "w") as jsonfile:
-        json.dump(data_to_export, jsonfile)
+    if len(argv) != 2:
+        print("Usage: script <emplyee_id>")
+    else:
+        get_employee_todo_progress(argv[1])

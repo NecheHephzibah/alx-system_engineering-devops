@@ -3,7 +3,8 @@
 
 import json
 import requests
-from  sys import argv
+from sys import argv
+
 
 def get_employee_todo_progress(employee_id):
     """the employee to do progress function"""

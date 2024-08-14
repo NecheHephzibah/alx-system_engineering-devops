@@ -1,0 +1,1 @@
+When debugging, sometimes logs are not enough. Either because the software is breaking in a way that was not expected and the error is not being logged, or because logs are not providing enough information. This task requires finding out why Apache is returning a 500 error. Once the issue is discovered, it is fixed and then automated using Puppet.

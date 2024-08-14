@@ -6,6 +6,7 @@ the titles of all hot articles for a given subreddit.
 
 import requests
 
+
 def recurse(subreddit, hot_list=None, after="", count=0):
     """Queries the Reddit API and returns a list containing the titles."""
     if hot_list is None:
@@ -19,7 +20,8 @@ def recurse(subreddit, hot_list=None, after="", count=0):
         "limit": 100
     }
     try:
-        response = requests.get(url, headers=headers, params=params, allow_redirects=False)
+        response = requests.get(url, headers=headers,
+                                params=params, allow_redirects=False)
         if response.status_code >= 400:
             return None
 
